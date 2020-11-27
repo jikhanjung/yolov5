@@ -30,11 +30,20 @@ def get_image_info(filename):
         try:
             if ret['GPSInfo'] != None:
                 gps_info = ret['GPSInfo']
-                #print("gps info:", gps_info)
+                print("gps info:", gps_info)
             degree_symbol = "°"
             minute_symbol = "'"
-            longitude = str(int(gps_info[4][0])) + degree_symbol + str(gps_info[4][1]) + minute_symbol + gps_info[3]
-            latitude = str(int(gps_info[2][0])) + degree_symbol + str(gps_info[2][1]) + minute_symbol + gps_info[1]
+            lon1, lon2, lon3 = gps_info[4][0], gps_info[4][1], gps_info[3]
+            lat1, lat2, lat3 = gps_info[2][0], gps_info[2][1], gps_info[1]
+            print("lon1 type:", lon1, type(lon1).name)
+            if type(lon1) == tuple:
+                lon1 = int(lon1[0]) / int(lon1[1])
+                lon2 = int(lon2[0]) / int(lon2[1])
+                lat1 = int(lat1[0]) / int(lat1[1])
+                lat2 = int(lat2[0]) / int(lat2[1])
+                #lon3 = int(lon2[0]) / int(lon2[1])
+            longitude = str(int(lon1)) + degree_symbol + str(lon2) + minute_symbol + lon3
+            latitude = str(int(lat1)) + degree_symbol + str(lat2) + minute_symbol + lat3
             map_datum = gps_info[18]
             image_info['latitude'] = latitude
             image_info['longitude'] = longitude
